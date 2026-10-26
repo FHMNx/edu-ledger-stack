@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import Student from "../models/Student.js";
+import { Mongoose } from "mongoose";
 
 //ADD
 export const createStudent = async (req: Request, res: Response) => {
@@ -12,11 +13,28 @@ export const createStudent = async (req: Request, res: Response) => {
     }
 }
 
-//GET
+//GET INCLUDING SORTING AND FILTERING
 export const getStudent = async (req: Request, res: Response) => {
     try {
-        const student = await Student.find();
-        res.status(200).json(student);
+        const { firstName, course, sortAge } = req.query;
+        let query: any = {};
+
+        if (firstName) {
+            query.firstName = { $regex: firstName as string, $options: 'i' };
+        }
+
+        if (course) {
+            query.course = { $regex: course as string, $options: 'i' };
+        }
+
+        let mongooseQuery = Student.find(query);
+        if (sortAge) {
+            const sortOrder = sortAge === 'desc' ? -1 : 1;   // In Mongoose, 1 is Ascending (youngest first), -1 is Descending (oldest first)
+            mongooseQuery = mongooseQuery.sort({ age: sortOrder });
+        }
+
+        const students = await mongooseQuery;
+        res.status(200).json(students);
     } catch (error) {
         res.status(500).json({ message: "Failed to retrieve Student", error })
     }
