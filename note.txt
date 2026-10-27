@@ -1,0 +1,65 @@
+=========================================================
+MODERN NODE.JS + TYPESCRIPT BACKEND SETUP COMMANDS
+=========================================================
+
+
+# 1. Navigate into the backend folder and initialize Node.js (creates package.json)
+cd backend-express
+npm init -y
+
+# 2. Install Core Production Dependencies
+# - express: The web server framework
+# - mongoose: MongoDB object modeling
+# - dotenv: Environment variable loader
+# - cors: Allows the frontend to communicate with the backend
+npm install express mongoose dotenv cors
+
+# 5. Install Development Dependencies (TypeScript & Execution Tools)
+# - typescript: The compiler
+# - @types/...: Type definitions for the JS libraries
+# - nodemon: Automatically restarts the server on file save
+# - tsx: Modern, fast execution engine to run .ts files directly (replaces ts-node)
+npm install -D typescript @types/node @types/express @types/cors nodemon tsx
+
+# 6. Initialize TypeScript (creates tsconfig.json)
+npx tsc --init
+
+# 7. Create the professional backend folder structure (Windows CMD syntax)
+mkdir src
+mkdir src\config
+mkdir src\controllers
+mkdir src\models
+mkdir src\routes
+
+=========================================================
+MANUAL STEPS TO REMEMBER AFTER RUNNING COMMANDS:
+=========================================================
+1. Open package.json and add: "type": "module"
+2. Update package.json "scripts" to:
+   "scripts": {
+     "dev": "nodemon --exec tsx src/index.ts",
+     "build": "tsc",
+     "start": "node dist/index.js"
+   }
+3. Create a .env file in the backend-express root for MONGODB_URI and PORT.
+4. Create a .gitignore file in the backend-express root and add:
+   node_modules/
+   .env
+   dist/
+
+
+
+
+
+
+// NEXTJS SETUP AND INSTALLATION //
+
+
+   # 1. Move up one level out of the backend folder
+cd ..
+
+# 2. Navigate into the empty frontend folder we created on day one
+cd frontend-nextjs
+
+# 3. Initialize the latest Next.js framework in the current directory
+npx create-next-app@latest .
