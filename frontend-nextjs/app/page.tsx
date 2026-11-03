@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface Student {
   _id: string;
@@ -42,7 +43,9 @@ export default function Home() {
         {/* HEADER SECTION */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Student Dashboard</h1>
-          <button className="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-md font-medium transition-colors cursor-pointer">+ Add New Student</button>
+          <Link href={'/add-student'}>
+            <button className="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-md font-medium transition-colors cursor-pointer">+ Add New Student</button>
+          </Link>
         </div>
 
         {/* DATA TABLE */}
