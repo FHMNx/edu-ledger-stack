@@ -36,6 +36,30 @@ export default function Home() {
     fetchStudents();
   }, [])
 
+
+  //DELETE STUDENT
+  const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this student?");
+    if (!confirmDelete) return;
+    try {
+      const response = await fetch(`http://localhost:5000/students/${id}`, {
+        method: "DELETE"
+      })
+      if (!response.ok) {
+        throw new Error("Failed to delete student");
+      }
+
+      const remainingStudents = students.filter(function (student) {
+        return student._id !== id;
+      })
+      setStudents(remainingStudents);
+
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      alert("Failed to delete the student.");
+    }
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
@@ -59,6 +83,7 @@ export default function Home() {
                 <th className="p-4 font-semibold">Course</th>
                 <th className="p-4 font-semibold">Batch</th>
                 <th className="p-4 font-semibold">Age</th>
+                <th className="p-4 font-semibold text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -83,6 +108,19 @@ export default function Home() {
                     <td className="p-4 text-gray-600">{student.course}</td>
                     <td className="p-4 text-gray-600">{student.batch}</td>
                     <td className="p-4 text-gray-600">{student.age}</td>
+                    <td className="p-4 text-center space-x-4">
+                      {/* EDIT */}
+                      <Link href={`/edit-student/${student._id}`}>
+                        <button className="text-blue-500 hover:text-blue-700 font-medium transition-colors cursor-pointer">Edit</button>
+                      </Link>
+
+                      {/* DELETE */}
+                      <button
+                        onClick={() => handleDelete(student._id)}
+                        className="text-red-500 hover:text-red-700 font-medium transition-colors cursor-pointer">Delete
+                      </button>
+                    </td>
+
                   </tr>
                 ))
               )}
